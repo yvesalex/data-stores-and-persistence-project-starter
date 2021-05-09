@@ -19,9 +19,10 @@ public class PetDAOImpl implements PetDAO{
     @Autowired
     NamedParameterJdbcTemplate jdbcTemplate;
 
-    String SELECT_QUERY = "select * from pet";
-    String SELECT_BY_ID_QUERY = " where id = :id";
-    String ADD_QUERY = "";
+    String SELECT_QUERY = "select * from pet_data ";
+    String SELECT_BY_ID_QUERY = "select * from pet_data where id = :id";
+    String ADD_QUERY = "insert into pet_data(type, name, owner_id, birth_date, notes) " +
+            " values(:type, :name, :ownerId, :birthDate, :notes)";
 
     private static  final RowMapper<PetData> petRowMapper = new BeanPropertyRowMapper<>(PetData.class);
 
@@ -32,15 +33,15 @@ public class PetDAOImpl implements PetDAO{
 
     @Override
     public PetData findById(long id) {
-        return (PetData) jdbcTemplate.query(SELECT_BY_ID_QUERY,
+        return jdbcTemplate.queryForObject(SELECT_BY_ID_QUERY,
                 new MapSqlParameterSource("id", id),
                 petRowMapper);
     }
 
     @Override
-    public long savePet(PetData petData) {
+    public void savePet(PetData petData) {
         KeyHolder key = new GeneratedKeyHolder();
         jdbcTemplate.update(ADD_QUERY, new BeanPropertySqlParameterSource(petData), key);
-        return key.getKey().longValue();
+//        return key.getKey().longValue();
     }
 }

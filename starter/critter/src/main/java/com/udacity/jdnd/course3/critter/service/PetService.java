@@ -12,8 +12,8 @@ public class PetService {
     @Autowired
     private PetDAO petDAO;
 
-    public long save(PetData pet){
-        return petDAO.savePet(pet);
+    public void save(PetData pet){
+        petDAO.savePet(pet);
     }
 
     public List<PetData> getAll(){

@@ -1,6 +1,8 @@
 package com.udacity.jdnd.course3.critter.pet;
 
+import com.udacity.jdnd.course3.critter.user.Customer;
 import com.udacity.jdnd.course3.critter.service.PetService;
+import com.udacity.jdnd.course3.critter.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,9 +19,12 @@ public class PetController {
     @Autowired
     private PetService petService;
 
+    @Autowired
+    private CustomerService customerService;
+
     @PostMapping
     public PetDTO savePet(@RequestBody PetDTO petDTO) {
-        PetData petData = new PetData(petDTO.getId(), petDTO.getType(), petDTO.getName(),
+        PetData petData = new PetData(petDTO.getId(), petDTO.getType().toString(), petDTO.getName(), petDTO.getOwnerId(),
                 petDTO.getBirthDate(), petDTO.getNotes());
         petService.save(petData);
         return petDTO;
@@ -62,18 +67,18 @@ public class PetController {
     @GetMapping("/owner/{ownerId}")
     public List<PetDTO> getPetsByOwner(@PathVariable long ownerId) {
         List<PetDTO> liste = new ArrayList<PetDTO>();
-        for (PetData petData :
-                petService.getAll()) {
+        Customer owner = customerService.findById(ownerId);
+        for (long petId :
+                owner.getPetIds()) {
+            PetData petData = petService.findById(petId);
             PetDTO petDTO = new PetDTO();
-            if(petData.getOwnerId() == ownerId){
-                petDTO.setBirthDate(petData.getBirthDate());
-                petDTO.setId(petData.getId());
-                petDTO.setName(petData.getName());
-                petDTO.setNotes(petData.getNotes());
-                petDTO.setType(PetType.valueOf(petData.getType()));
-                petDTO.setOwnerId(petData.getOwnerId());
-                liste.add(petDTO);
-            }
+            petDTO.setBirthDate(petData.getBirthDate());
+            petDTO.setId(petData.getId());
+            petDTO.setName(petData.getName());
+            petDTO.setNotes(petData.getNotes());
+            petDTO.setType(PetType.valueOf(petData.getType()));
+            petDTO.setOwnerId(ownerId);
+            liste.add(petDTO);
         }
         return  liste;
     }

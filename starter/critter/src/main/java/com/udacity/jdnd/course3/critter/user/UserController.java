@@ -1,8 +1,10 @@
 package com.udacity.jdnd.course3.critter.user;
 
+import com.udacity.jdnd.course3.critter.pet.PetData;
 import com.udacity.jdnd.course3.critter.repository.CustomerRepository;
 import com.udacity.jdnd.course3.critter.service.CustomerService;
 import com.udacity.jdnd.course3.critter.service.EmployeeService;
+import com.udacity.jdnd.course3.critter.service.PetService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,6 +27,9 @@ public class UserController {
 
     @Autowired
     private EmployeeService employeeService;
+
+    @Autowired
+    private PetService petService;
 
     @PostMapping("/customer")
     public CustomerDTO saveCustomer(@RequestBody CustomerDTO customerDTO){
@@ -52,16 +57,16 @@ public class UserController {
 
     @GetMapping("/customer/pet/{petId}")
     public CustomerDTO getOwnerByPet(@PathVariable long petId){
-        CustomerDTO customerDTO = null;
-        for (Customer customer :
-                customerService.getAll()) {
-            if(customer.getPetIds().contains(petId)) {
+        CustomerDTO customerDTO = new CustomerDTO();
+        PetData petData = petService.findById(petId);
+        if(petData != null){
+            Customer customer = customerService.findById(petData.getOwnerId());
+            if(customer != null){
                 customerDTO.setId(customer.getId());
                 customerDTO.setName(customer.getName());
                 customerDTO.setNotes(customer.getNotes());
                 customerDTO.setPetIds(customer.getPetIds());
                 customerDTO.setPhoneNumber(customer.getPhoneNumber());
-                break;
             }
         }
         return customerDTO;
@@ -99,6 +104,7 @@ public class UserController {
     public List<EmployeeDTO> findEmployeesForService(@RequestBody EmployeeRequestDTO employeeDTO) {
         List<EmployeeDTO> liste = new ArrayList<EmployeeDTO>();
         for (Employee employee : employeeService.getAll()) {
+            System.out.println(employee.getName());
             if (employee.getDaysAvailable().contains(employeeDTO.getDate())) {
                 EmployeeDTO eDTO = null;
                 if(employee != null){

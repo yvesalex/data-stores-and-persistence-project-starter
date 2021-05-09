@@ -6,10 +6,11 @@ import java.util.List;
 @Entity
 public class Customer {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String name;
     private String notes;
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ElementCollection(targetClass = Long.class)
     private List<Long> petIds;
     private String phoneNumber;
 

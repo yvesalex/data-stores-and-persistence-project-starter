@@ -5,6 +5,7 @@ import com.udacity.jdnd.course3.critter.schedule.Schedule;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -13,6 +14,8 @@ public class ScheduleService {
     private ScheduleRepository scheduleRepository;
 
     public Schedule save(Schedule schedule){
+        System.out.println(schedule.getId());
+        System.out.println(schedule.getDate());
         return scheduleRepository.save(schedule);
     }
 
@@ -25,6 +28,13 @@ public class ScheduleService {
     }
 
     public List<Schedule> findByPetId(long petId) {
-        return scheduleRepository.findByPetId(petId);
+        List<Schedule> liste = new ArrayList<Schedule>();
+        for (Schedule schedule :
+                scheduleRepository.findAll()) {
+            if (schedule.getPetIds().contains(petId)) {
+                liste.add(schedule);
+            }
+        }
+        return liste;
     }
 }

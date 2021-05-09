@@ -1,5 +1,6 @@
 package com.udacity.jdnd.course3.critter.user;
 
+import javax.annotation.Generated;
 import javax.persistence.*;
 import java.time.DayOfWeek;
 import java.util.ArrayList;
@@ -8,11 +9,12 @@ import java.util.Set;
 @Entity
 public class Employee{
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String name;
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "employee", cascade = CascadeType.ALL)
+    @ElementCollection(targetClass = EmployeeSkill.class)
     private Set<EmployeeSkill> skills;
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "employee", cascade = CascadeType.ALL)
+    @ElementCollection(targetClass = DayOfWeek.class)
     private Set<DayOfWeek> daysAvailable;
 
     public Employee() {

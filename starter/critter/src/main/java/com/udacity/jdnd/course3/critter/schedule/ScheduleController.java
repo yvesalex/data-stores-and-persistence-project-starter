@@ -24,6 +24,7 @@ public class ScheduleController {
         schedule.setEmployeeIds(scheduleDTO.getEmployeeIds());
         schedule.setPetIds(scheduleDTO.getPetIds());
 
+        System.out.println(schedule);
         scheduleService.save(schedule);
         return scheduleDTO;
     }
@@ -74,6 +75,7 @@ public class ScheduleController {
                 liste.add(scheduleDto);
             }
         }
+        System.out.println("nb schedule for emp id" + employeeId + ":" + liste.size());
         return liste;
     }
 
