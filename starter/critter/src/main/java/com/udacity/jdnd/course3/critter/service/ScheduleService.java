@@ -5,10 +5,12 @@ import com.udacity.jdnd.course3.critter.schedule.Schedule;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@Transactional
 public class ScheduleService {
     @Autowired
     private ScheduleRepository scheduleRepository;
@@ -36,5 +38,17 @@ public class ScheduleService {
             }
         }
         return liste;
+    }
+
+    public List<Schedule> getScheduleForPet(long petId) {
+        return scheduleRepository.findByPetIds(petId);
+    }
+
+    public List<Schedule> getScheduleForEmployee(long employeeId) {
+        return scheduleRepository.findByEmployeeIds(employeeId);
+    }
+
+    public List<Schedule> getScheduleForCustomer(long customerId) {
+        return scheduleRepository.findByCustomerId(customerId);
     }
 }

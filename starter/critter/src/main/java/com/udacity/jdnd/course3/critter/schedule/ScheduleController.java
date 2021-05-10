@@ -1,5 +1,6 @@
 package com.udacity.jdnd.course3.critter.schedule;
 
+import com.udacity.jdnd.course3.critter.schedule.Schedule;
 import com.udacity.jdnd.course3.critter.service.ScheduleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -47,16 +48,13 @@ public class ScheduleController {
     @GetMapping("/pet/{petId}")
     public List<ScheduleDTO> getScheduleForPet(@PathVariable long petId) {
         List<ScheduleDTO> liste = new ArrayList<ScheduleDTO>();
-        for (Schedule schedule :
-                scheduleService.getAll()) {
-            if(schedule.getPetIds().contains(petId)) {
-                ScheduleDTO scheduleDto = new ScheduleDTO();
-                scheduleDto.setActivities(schedule.getActivities());
-                scheduleDto.setDate(schedule.getDate());
-                scheduleDto.setEmployeeIds(schedule.getEmployeeIds());
-                scheduleDto.setPetIds(schedule.getPetIds());
-                liste.add(scheduleDto);
-            }
+        for (Schedule schedule : scheduleService.getScheduleForPet(petId)) {
+            ScheduleDTO scheduleDto = new ScheduleDTO();
+            scheduleDto.setActivities(schedule.getActivities());
+            scheduleDto.setDate(schedule.getDate());
+            scheduleDto.setEmployeeIds(schedule.getEmployeeIds());
+            scheduleDto.setPetIds(schedule.getPetIds());
+            liste.add(scheduleDto);
         }
         return liste;
     }
@@ -64,16 +62,13 @@ public class ScheduleController {
     @GetMapping("/employee/{employeeId}")
     public List<ScheduleDTO> getScheduleForEmployee(@PathVariable long employeeId) {
         List<ScheduleDTO> liste = new ArrayList<ScheduleDTO>();
-        for (Schedule schedule :
-                scheduleService.getAll()) {
-            if(schedule.getEmployeeIds().contains(employeeId)) {
-                ScheduleDTO scheduleDto = new ScheduleDTO();
-                scheduleDto.setActivities(schedule.getActivities());
-                scheduleDto.setDate(schedule.getDate());
-                scheduleDto.setEmployeeIds(schedule.getEmployeeIds());
-                scheduleDto.setPetIds(schedule.getPetIds());
-                liste.add(scheduleDto);
-            }
+        for (Schedule schedule : scheduleService.getScheduleForEmployee(employeeId)) {
+            ScheduleDTO scheduleDto = new ScheduleDTO();
+            scheduleDto.setActivities(schedule.getActivities());
+            scheduleDto.setDate(schedule.getDate());
+            scheduleDto.setEmployeeIds(schedule.getEmployeeIds());
+            scheduleDto.setPetIds(schedule.getPetIds());
+            liste.add(scheduleDto);
         }
         System.out.println("nb schedule for emp id" + employeeId + ":" + liste.size());
         return liste;
@@ -82,16 +77,13 @@ public class ScheduleController {
     @GetMapping("/customer/{customerId}")
     public List<ScheduleDTO> getScheduleForCustomer(@PathVariable long customerId) {
         List<ScheduleDTO> liste = new ArrayList<ScheduleDTO>();
-        for (Schedule schedule :
-                scheduleService.getAll()) {
-            if(schedule.getEmployeeIds().contains(customerId)) {
-                ScheduleDTO scheduleDto = new ScheduleDTO();
-                scheduleDto.setActivities(schedule.getActivities());
-                scheduleDto.setDate(schedule.getDate());
-                scheduleDto.setEmployeeIds(schedule.getEmployeeIds());
-                scheduleDto.setPetIds(schedule.getPetIds());
-                liste.add(scheduleDto);
-            }
+        for (Schedule schedule : scheduleService.getScheduleForCustomer(customerId)) {
+            ScheduleDTO scheduleDto = new ScheduleDTO();
+            scheduleDto.setActivities(schedule.getActivities());
+            scheduleDto.setDate(schedule.getDate());
+            scheduleDto.setEmployeeIds(schedule.getEmployeeIds());
+            scheduleDto.setPetIds(schedule.getPetIds());
+            liste.add(scheduleDto);
         }
         return liste;
     }
